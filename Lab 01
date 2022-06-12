@@ -1,0 +1,354 @@
+Output
+
+
+> use mydb
+switched to db mydb
+> db.createCollection("Student");
+{ "ok" : 1 }
+> db.Student.insert({_id: 1, StudName: "max", Grade: 9, Hobbies:
+"reading"});
+WriteResult({ "nInserted" : 1 })
+> db.Student.find();
+{ "_id" : 1, "StudName" : "max", "Grade" : 9, "Hobbies" : "reading" }
+> db.Student.update({_id:3, StudName: "rob", Grade: 8},{$set: {Hobbies:
+"Skating"}},{upsert: true});
+WriteResult({ "nMatched" : 0, "nUpserted" : 1, "nModified" : 0, "_id" : 3 })
+> db.Student.find()
+{ "_id" : 1, "StudName" : "max", "Grade" : 9, "Hobbies" : "reading" }
+{ "_id" : 3, "Grade" : 8, "StudName" : "rob", "Hobbies" : "Skating" }
+> db.Student.find().pretty()
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+> db.Student.find({},{StudName: 1, Grade: 1,_id: 0});
+{ "StudName" : "max", "Grade" : 9 }
+{ "Grade" : 8, "StudName" : "rob" }
+> db.Student.find({Grade: {$eq: 8}}).pretty()
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+> db.Student.find({Hobbies: {$in: ["Chess","Skating"]}}).pretty()
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+> db.Student.insert({_id: 2, StudName: "john", Grade: 10, Hobbies: "dancing"});
+WriteResult({ "nInserted" : 1 })
+> db.Student.find().pretty()
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+> db.Student.find({StudName: /^M/}).pretty()
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+> db.Student.find({StudName: /e/}).pretty()
+> db.Student.count()
+3
+> db.Student.find().sort({StudName: -1}).pretty();
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+> db.Student.save({StudName: "tom", Grade: 8});
+WriteResult({ "nInserted" : 1 })
+> db.Student.update({_id:2},{$set:{Location: "Network"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find().pretty();
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing",
+"Location" : "Network"
+}
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+> db.Student.update({_id:2},{$unset:{Location: "Network"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find().pretty();
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+> db.Student.find({_id:1},{StudName:1,Grade:1,_id:0});
+{ "StudName" : "max", "Grade" : 9 }
+> db.Student.find({Grade:{$ne:"8"}}).pretty();
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating"
+}
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+> db.Student.find({Grade:{$ne:8}}).pretty();
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+> db.Student.insert({_id: 4, StudName: "Suresh", Grade: 9, Hobbies: "Games"});
+WriteResult({ "nInserted" : 1 })
+> db.Student.find({StudName:/s$/}).pretty();
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+> db.Students.update({_id:3},{$set:{Location:null}});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> db.Student.update({_id:3},{$set:{Location:null}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find()
+{ "_id" : 1, "StudName" : "max", "Grade" : 9, "Hobbies" : "reading" }
+{ "_id" : 3, "Grade" : 8, "StudName" : "rob", "Hobbies" : "Skating", "Location" : null }
+{ "_id" : 2, "StudName" : "john", "Grade" : 10, "Hobbies" : "dancing" }
+{ "_id" : ObjectId("6253f0c24cacc6d6c2d43d70"), "StudName" : "tom", "Grade" : 8 }
+{ "_id" : 4, "StudName" : "Suresh", "Grade" : 9, "Hobbies" : "Games" }
+> db.Student.count();
+5
+> db.Student.count({Grade:"8"});
+0
+> db.Student.count({Grade:8});
+2
+> db.Student.find({Grade:8}).limit(3).pretty();
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating",
+"Location" : null
+}
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+> db.Students.find().sort({StudName:1}).pretty();
+> db.Student.find().sort({StudName:1}).pretty();
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating",
+"Location" : null
+}
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+{ "_id" : 4, "StudName" : "Suresh", "Grade" : 9, "Hobbies" : "Games" }
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+> db.Student.find().sort({StudName:-1}).pretty();
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+{ "_id" : 4, "StudName" : "Suresh", "Grade" : 9, "Hobbies" : "Games" }
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+{
+"_id" : 1,
+"StudName" : "max",
+"Grade" : 9,
+"Hobbies" : "reading"
+}
+{
+"_id" : 3,
+"Grade" : 8,
+"StudName" : "rob",
+"Hobbies" : "Skating",
+"Location" : null
+}
+> db.Student.find().skip(2).pretty();
+{
+"_id" : 2,
+"StudName" : "john",
+"Grade" : 10,
+"Hobbies" : "dancing"
+}
+{
+"_id" : ObjectId("6253f0c24cacc6d6c2d43d70"),
+"StudName" : "tom",
+"Grade" : 8
+}
+{ "_id" : 4, "StudName" : "Suresh", "Grade" : 9, "Hobbies" : "Games" }
+> db.createCollection("food");
+{ "ok" : 1 }
+> db.food.insert({_id:1, fruits:["grapes","mango","apple"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.insert( { _id:2, fruits:["grapes","mango","cherry"] } )
+WriteResult({ "nInserted" : 1 })
+> db.food.insert( { _id:3, fruits:["banana","mango"] } )
+WriteResult({ "nInserted" : 1 })
+> db.food.find ( {fruits: ["grapes","mango","apple"] } ). pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+> db.food.find({fruits:["grapes","mango","apple"]}).pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+> db.food.find({"fruits.1":"grapes"})
+> db.food.find()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ] }
+{ "_id" : 3, "fruits" : [ "banana", "mango" ] }
+> db.food.find({"fruits.0":"grapes"})
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ] }
+> db.food.find({"fruits":{$size:2}})
+{ "_id" : 3, "fruits" : [ "banana", "mango" ] }
+> db.food.find({_id:1},{"fruits":{$slice:2}})
+{ "_id" : 1, "fruits" : [ "grapes", "mango" ] }
+> db.food.find({fruits:{$all:["mango","grapes"]}})
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ] }
+> db.food.update({_id:3},{$set:{"fruits.1":"apple"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.food.find()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ] }
+{ "_id" : 3, "fruits" : [ "banana", "apple" ] }
+> db.food.update({_id:2},{$push:{price:{grapes:80,mango:200,cherry:100}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.food.find()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ], "price" : [ { "grapes" : 80, "mango" : 200,
+"cherry" : 100 } ] }
+{ "_id" : 3, "fruits" : [ "banana", "apple" ] }
+> db.food.find().pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{
+"_id" : 2,
+"fruits" : [
+"grapes",
+"mango",
+"cherry"
+],
+"price" : [
+{
+"grapes" : 80,
+"mango" : 200,
+"cherry" : 100
+}
+]
+}
+{ "_id" : 3, "fruits" : [ "banana", "apple" ] }
