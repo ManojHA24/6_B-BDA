@@ -194,7 +194,7 @@ hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /input_manoj
 Found 2 items
 drwxr-xr-x   - hduser supergroup          0 2022-06-20 15:16 /input_manoj/output_manoj
 -rw-r--r--   1 hduser supergroup         52 2022-06-20 15:15 /input_manoj/sample.txt
-hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /input_khushil/output_manoj
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /input_manoj/output_manoj
 Found 2 items
 -rw-r--r--   1 hduser supergroup          0 2022-06-20 15:16 /input_manoj/output_manoj/_SUCCESS
 -rw-r--r--   1 hduser supergroup         63 2022-06-20 15:16 /input_manoj/output_manoj/part-00000
